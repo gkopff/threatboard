@@ -1,15 +1,70 @@
+@**
+* Renders the 'scaffolding' that wraps the proper content of each page.
+* @param title The page title.
+* @param content The content this scaffolding wraps.
+*@
 @(title: String)(content: Html)
+
+@import play.api.Play
 
 <!DOCTYPE html>
 
-<html>
-    <head>
-        <title>@title</title>
-        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
-        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
-        <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
-    </head>
-    <body>
-        @content
-    </body>
+<html lang="en">
+  <head>
+    <title>Threatboard - @title</title>
+    <link href="@routes.Assets.at("bootstrap/css/bootstrap.min.css")" rel="stylesheet">
+    <link href="@routes.Assets.at("bootstrap/css/bootstrap-theme.min.css")" rel="stylesheet">
+    <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/threatboard.png")">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <style>
+      body {
+        padding-top: 70px;
+        padding-bottom: 30px;
+      }
+
+      #app-icon {
+        width: 20px;
+        height: 20px;
+        vertical-align: top;
+      }
+    </style>
+  </head>
+  <body role="document">
+      <!-- Fixed navbar -->
+    <div class="navbar navbar-fixed-top navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/"><img id="app-icon" src="@routes.Assets.at("images/threatboard.png")"> Threatboard</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Alarms</a></li>
+          </ul>
+          <p class="navbar-text pull-right">
+            Logged in as @session().get("username") <a class="navbar-link" href="@routes.AuthenticationController.doLogout()"><span style="font-size: 90%" class="glyphicon glyphicon-eject"></span></a>
+          </p>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div class="container" role="main">
+      @content
+      <hr style="margin-top: 60px; margin-bottom: 4px; width: 600px">
+      <div class="text-center"><small class="text-muted">@Play.current.configuration.getString("application.version") &nbsp; Copyright &copy;
+        2014 Gregory Kopff. &nbsp; All Rights Reserved.</small></div>
+    </div>
+
+    <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")"></script>
+    <script src="@routes.Assets.at("bootstrap/js/bootstrap.min.js")"></script>
+  </body>
 </html>

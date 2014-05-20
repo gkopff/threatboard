@@ -21,21 +21,26 @@
  * THE SOFTWARE.
  */
 
-package controllers;
+package models;
 
-import play.mvc.Controller;
-import play.mvc.Result;
-import play.mvc.Security;
-import views.html.index;
+import play.data.validation.Constraints;
 
-import javax.annotation.concurrent.NotThreadSafe;
+import javax.annotation.Nullable;
+import javax.annotation.concurrent.ThreadSafe;
 
-@NotThreadSafe
-@Security.Authenticated(ThreatboardAuthenticator.class)
-public class Application extends Controller
+/**
+ * The model used by the authentication form.
+ */
+@ThreadSafe
+public class AuthModel
 {
-  public static Result index()
-  {
-    return ok(index.render());
-  }
+  /** The Crowd username. */
+  @Nullable
+  @Constraints.Required(message = "Username is required")
+  public String username;
+
+  /** The Crowd password. */
+  @Nullable
+  @Constraints.Required(message = "Password is required")
+  public String password;
 }

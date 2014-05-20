@@ -23,19 +23,34 @@
 
 package controllers;
 
-import play.mvc.Controller;
+import com.google.common.base.Preconditions;
+import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.Security;
-import views.html.index;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
+/**
+ * A Play authenticator which requires clients to log in. <p/>
+ *
+ * Our implementation uses {@code username} in exactly the same manner as the default authenticator,
+ * so we only need to override the failed authorisation result. <p/>
+ *
+ * The Play framework invokes this class in a thread-safe manner - clients do not call it directly.
+ */
 @NotThreadSafe
-@Security.Authenticated(ThreatboardAuthenticator.class)
-public class Application extends Controller
+public class ThreatboardAuthenticator extends Security.Authenticator
 {
-  public static Result index()
+  /**
+   * Redirects the unauthorised user to the login page.
+   * @param ctx The context.
+   * @return A redirect to the login page.
+   */
+  @Override
+  public Result onUnauthorized(Http.Context ctx)
   {
-    return ok(index.render());
+    Preconditions.checkNotNull(ctx, "ctx cannot be null");
+
+    return redirect(routes.AuthenticationController.loginForm());
   }
 }
